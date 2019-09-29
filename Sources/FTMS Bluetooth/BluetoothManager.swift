@@ -9,9 +9,7 @@
 import Combine
 import CoreBluetooth
 
-@available(iOS 13.0, *)
-@available(watchOS 6.0, *)
-@available(OSX 10.15, *)
+@available(iOS 10.0, *)
 public class BluetoothManager: NSObject {
     
     public static let sharedInstance = BluetoothManager()
@@ -35,7 +33,6 @@ public class BluetoothManager: NSObject {
         }
     }
     
-    @available(iOS 13.0, *)
     public static var rowerData : Subject<RowerData> {
         get {
             return sharedInstance.peripheralDelegate.rowerData

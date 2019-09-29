@@ -9,7 +9,6 @@ import Foundation
 import Combine
 import CoreBluetooth
 
-@available(iOS 13.0, *)
 class FTMSPeripheralDelegate : NSObject, CBPeripheralDelegate {
 
     var rowerData = Subject<RowerData>(value: RowerData())

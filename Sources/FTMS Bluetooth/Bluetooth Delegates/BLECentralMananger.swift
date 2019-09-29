@@ -8,9 +8,7 @@
 
 import CoreBluetooth
 
-@available(watchOS 6.0, *)
-@available(iOS 13.0, *)
-@available(OSX 10.15, *)
+@available(iOS 10.0, *)
 class BLECentralMananger: NSObject, CBCentralManagerDelegate {
 
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
