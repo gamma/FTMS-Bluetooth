@@ -10,7 +10,7 @@ import Combine
 import CoreBluetooth
 
 @available(iOS 10.0, *)
-public class BluetoothManager: NSObject {
+public class BluetoothManager: NSObject, ObservableObject {
     
     public static let sharedInstance = BluetoothManager()
     
@@ -27,9 +27,15 @@ public class BluetoothManager: NSObject {
         sharedInstance.connectFTMS( peripheral: peripheral )
     }
 
-    public static var isReady:Subject<Bool> {
+    public static var isReady : Subject<Bool> {
         get {
             return sharedInstance.isReady
+        }
+    }
+    
+    public static var isConnected : Subject<Bool> {
+        get {
+            return sharedInstance.isConnected
         }
     }
     
@@ -41,6 +47,8 @@ public class BluetoothManager: NSObject {
 
     // MARK: Internal functions
     fileprivate let isReady = Subject<Bool>(value: false)
+    fileprivate let isConnected = Subject<Bool>(value: false)
+
     fileprivate let connectedComModule = Subject<CBPeripheral?>(value: nil)
     fileprivate let peripheralDelegate = FTMSPeripheralDelegate()
 
@@ -50,6 +58,7 @@ public class BluetoothManager: NSObject {
         label: "de.gammaproduction.s4commodule.bluetooth.central",
         attributes: DispatchQueue.Attributes.concurrent
     )
+    
 
     override private init( ) {
         // Perform any final initialization of your application.
@@ -70,6 +79,7 @@ public class BluetoothManager: NSObject {
     func connectFTMS( peripheral: CBPeripheral ) {
         peripheral.delegate = peripheralDelegate
         connectedComModule.value = peripheral
+        isConnected.value = true
         centralManager.connect(connectedComModule.value!, options: nil)
     }
 
@@ -85,5 +95,7 @@ public class BluetoothManager: NSObject {
 
             centralManager.cancelPeripheralConnection(comModule)
         }
+        
+        isConnected.value = false
     }
 }
